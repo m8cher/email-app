@@ -1,0 +1,52 @@
+{
+    "gmail": {
+        "smtp": {
+            "host": "smtp.gmail.com",
+            "port": 587
+        },
+        "imap": {
+            "host": "imap.gmail.com",
+            "port": 993
+        }
+    },
+    "yandex": {
+        "smtp": {
+            "host": "smtp.yandex.ru",
+            "port": 465
+        },
+        "imap": {
+            "host": "imap.yandex.ru",
+            "port": 993
+        }
+    },
+    "mail": {
+        "smtp": {
+            "host": "smtp.mail.ru",
+            "port": 465
+        },
+        "imap": {
+            "host": "imap.mail.ru",
+            "port": 993
+        }
+    },
+    "outlook": {
+        "smtp": {
+            "host": "smtp.office365.com",
+            "port": 587
+        },
+        "imap": {
+            "host": "outlook.office365.com",
+            "port": 993
+        }
+    },
+    "msn": {
+        "smtp": {
+            "host": "smtp-mail.outlook.com ",
+            "port": 587
+        },
+        "imap": {
+            "host": "imap-mail.outlook.com",
+            "port": 993
+        }
+    }
+}

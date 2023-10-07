@@ -1,0 +1,14 @@
+# Python cache files
+*.pyc
+*__pycache__*
+
+# VS Code files
+.vscode/
+
+# virtual envs
+env/
+.venv/
+
+# dotenv files
+.env
+.dotenv
