@@ -20,3 +20,13 @@ def get_server(domain: str, server: str):
         message = 'Could not receive host and port of SMTP server'
         logger.error(message)
         raise ValueError(message)
+
+
+def build_filepath(filepath):
+    """Build new filepath if filepath exists."""
+    filename, extension = os.path.splitext(filepath)
+    counter = 1
+    while os.path.exists(filepath):
+        filepath = filename + ' (' + str(counter) + ')' + extension
+        counter += 1
+    return filepath

@@ -1,8 +1,6 @@
 # email-app
 ---
 
-Read this in [Russian](./README.ru.md).
-
 Пакет для работы с электронной почтой. Позволяет:
 - отправлять письма с помощью SMTP-сервера
 - читать письма с помощью IMAP-сервера.
@@ -30,7 +28,7 @@ send_email(
     recievers=['reciever1@gmail.com', 'reciever2@yandex.ru'],
     subject='Тема',
     message_text='hello',
-    attachments_list=[r'path\to\pdf_file.pdf', r'path\to\excel_file.xlsx']
+    attachments=['path/to/pdf_file.pdf', 'path/to/excel_file.xlsx']
 )
 ```
 - `email` - email отправителя;
@@ -44,7 +42,7 @@ send_email(
 - `message_text` - текст сообщения;
 - `message_template` - путь к файлу с шаблоном сообщения (.txt или .html);
 - `template_kwargs` - словарь со значениями для подстановки в шаблон;
-- `attachments_list` - список путей к файлам вложений;
+- `attachments` - список путей к файлам вложений;
 - `host` - хост SMTP-сервера;
 - `port` - порт SMTP-сервера.
 
@@ -83,6 +81,8 @@ mails = read_email(
 - `folder` - путь к папке для сохранения прикрепленных файлов.
 - `host` - хост IMAP-сервера;
 - `port` - порт IMAP-сервера.
+
+**Примечание**: Если существует файл с таким же названием, как у прикрепленного файла, в `folder`, то прикрепленный файл сохраняется под измененным названием. Например: "test.xlsx" изменится на "test (1).xlsx".
 
 Возвращает список словарей прочитанных писем со следующими данными: `subject`, `from`, `date`, `body` (текст письма), `attachments` (список словарей из путей к сохраненным файлам или названий прикрепленных без или с payload в зависимости от `with_payload`).
 

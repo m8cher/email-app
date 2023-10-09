@@ -17,21 +17,21 @@ from .types import SendEmailParams
 from .utils import get_server
 
 
-def create_message(sender: str, recipient: str, subject: str = None):
+def create_message(sender: str, reciever: str, subject: str = None):
     """Create a message object.
 
-    sender       email sender
-    recipient    email recipient or recipients (via ', ')
+    sender      email sender
+    reciever    email reciever or recievers (via ', ')
 
     Additional parameters:
-    subject      email subject;
+    subject     email subject;
 
-    return       email.mime.multipart.MIMEMultipart object to which you can
-                 attach text, files and send.
+    return      email.mime.multipart.MIMEMultipart object to which you can
+                attach text, files and send.
     """
     message = MIMEMultipart()
     message['From'] = sender
-    message['To'] = recipient
+    message['To'] = reciever
     if subject:
         message['Subject'] = subject
     return message
@@ -174,7 +174,7 @@ def get_attachments(filepaths: list[Path]) -> list:
 def send_email(
     email: str,
     password: str,
-    recipients: list[str],
+    recievers: list[str],
     domain: str = None,
     subject: str = None,
     message_text: str = None,
@@ -189,7 +189,7 @@ def send_email(
 
     email               sender email address;
     password            email app password;
-    recipients          email recipients;
+    recievers          email recievers;
     domain              domain of the email service.
                         If None, will be received from email.
                         Examples: google, yandex;
@@ -211,7 +211,7 @@ def send_email(
         email=email,
         password=password,
         domain=domain,
-        recipients=recipients,
+        recievers=recievers,
         subject=subject,
         message_text=message_text,
         message_template=message_template,
@@ -221,7 +221,7 @@ def send_email(
 
     if host is None and port is None:
         # Receiving the server host and port
-        host, port = get_server(domain=params.domain, server=params.server)
+        host, port = get_server(domain=params.domain, server='smtp')
 
     # Set up a connection with the SMTP server
     # context = ssl.create_default_context()
@@ -231,9 +231,9 @@ def send_email(
         logger.debug('Authorization completed')
 
         # Create message object
-        message_to = ', '.join(params.recipients)
+        message_to = ', '.join(params.recievers)
         message = create_message(
-            sender=params.email, recipient=message_to, subject=params.subject
+            sender=params.email, reciever=message_to, subject=params.subject
         )
 
         # Process template and add text
@@ -250,10 +250,11 @@ def send_email(
         logger.debug('Message text attached')
 
         # Process and add attachments
-        attachments = get_attachments(params.attachments)
-        for attachment in attachments:
-            message.attach(attachment)
-        logger.debug('All files attached')
+        if params.attachments:
+            attachments = get_attachments(params.attachments)
+            for attachment in attachments:
+                message.attach(attachment)
+            logger.debug('All files attached')
 
         # Send message
         server.send_message(message)

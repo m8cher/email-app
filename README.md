@@ -27,15 +27,15 @@ send_email(
     email='some_email@yandex.ru',
     password='some_password',
     domain='yandex',
-    recipients=['recipient1@gmail.com', 'recipient2@yandex.ru'],
-    subject='Тема',
-    message_text='hello',
-    attachments_list=[r'path\to\pdf_file.pdf', r'path\to\excel_file.xlsx']
+    recievers=['reciever1@gmail.com', 'reciever2@yandex.ru'],
+    subject='Some subject',
+    message_text='Hello!',
+    attachments=[r'path\to\pdf_file.pdf', r'path\to\excel_file.xlsx']
 )
 ```
 - `email` - sender email address;
 - `password` - email app password;
-- `recipients` - email recipients;
+- `recievers` - email recievers;
 
 Additional parameters: 
 
@@ -44,7 +44,7 @@ Additional parameters:
 - `message_text` - message text;
 - `message_template` - path to the message template file (.txt or .html);
 - `template_kwargs` - dictionary with values for template substitution;
-- `attachments_list` - list of attachment files paths;
+- `attachments` - list of attachment files paths;
 - `host` - SMTP-server host;
 - `port` - SMTP-server port.
 
@@ -83,6 +83,8 @@ Additional parameters:
 - `folder` - folder path where attached files are saved;
 - `host` - IMAP-server host;
 - `port` - IMAP-server port.
+
+**Note**: If a file with the same name as the attached file exists in the `folder`, the attached file is saved under modified name. Example: "test.xlsx" modified to "test (1).xlsx".
 
 Returns a list of dictionaries containing the following email data: `subject`, `from`, `date`, `body` (email text), `attachments` (list of dictionaries with paths where attachments are saved or names of attachments with or without payload, depending on `with_payload`).
 

@@ -11,7 +11,7 @@ import quopri
 from bs4 import BeautifulSoup
 
 from .types import ReadEmailParams
-from .utils import get_server
+from .utils import get_server, build_filepath
 
 
 def get_header(message_header: str):
@@ -88,13 +88,9 @@ def get_attachment(
     filename = message.get_filename()
     payload = message.get_payload(decode=True)
     if filename:
-        # Create folder, if not exist
         if folder:
-            if not os.path.exists(folder):
-                os.mkdir(folder)
-                logger.debug(f"Created a folder '{folder}'")
-            filepath = os.path.join(folder, filename)
-            # Сохранение файла
+            filepath = build_filepath(os.path.join(folder, filename))
+            # Save file
             open(filepath, "wb").write(payload)
             logger.info(f"Attached file '{filename}' saved")
             return {'path': filepath}
@@ -241,8 +237,7 @@ def read_email(
 
     Additional parameters:
     last            read the last n emails;
-    id_key          ключ, под которым хранится ID письма.
-                    Example: "Message-ID" - for Yandex;
+    id_key          email ID key.. Example: "Message-ID" - for Yandex;
     seen            mark the email as "read." Default: True;
     with_payload    add payload for attached files;
     folder          folder path where attached files are saved;
@@ -252,6 +247,12 @@ def read_email(
     return          list[dict].
     """
     logger = logging.getLogger(__name__)
+
+    # Create folder, if not exist
+    if folder:
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+            logger.debug(f"Created a folder '{folder}'")
 
     # Check parameters
     params = ReadEmailParams(
@@ -269,7 +270,7 @@ def read_email(
 
     if host is None and port is None:
         # Receiving the server host and port
-        host, port = get_server(domain=params.domain, server=params.server)
+        host, port = get_server(domain=params.domain, server='imap')
 
     # Set up a connection with the SMTP server
     with imaplib.IMAP4_SSL(host, port) as server:

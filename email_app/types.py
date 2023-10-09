@@ -33,10 +33,10 @@ class Email(BaseModel):
 
 
 class SendEmailParams(Email):
-    recipients: list[str]
+    recievers: list[str]
 
     _valid_contacts = validator(
-        'recipients', allow_reuse=True, each_item=True
+        'recievers', allow_reuse=True, each_item=True
     )(valid_email)
 
     subject: Optional[str] = None
