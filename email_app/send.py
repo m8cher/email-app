@@ -189,7 +189,7 @@ def send_email(
 
     email               sender email address;
     password            email app password;
-    recievers          email recievers;
+    recievers           email recievers;
     domain              domain of the email service.
                         If None, will be received from email.
                         Examples: google, yandex;

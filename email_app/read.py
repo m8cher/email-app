@@ -15,10 +15,22 @@ from .utils import get_server, build_filepath
 
 
 def get_header(message_header: str):
+    """Decode email subject and sender.
+
+    message_header   str;
+
+    return           str.
+    """
     return str(make_header(decode_header(message_header)))
 
 
 def get_date(message_date: str):
+    """Get email sending date.
+
+    message_date    str;
+
+    return          str.
+    """
     date_tuple = email.utils.parsedate_tz(message_date)
     if date_tuple:
         date = datetime.fromtimestamp(email.utils.mktime_tz(date_tuple))
@@ -27,7 +39,12 @@ def get_date(message_date: str):
 
 
 def get_headers(message: email.message.Message):
-    """message    email.message.Message object"""
+    """Get email headers.
+
+    message    email.message.Message object;
+
+    return     tuple.
+    """
     subject = get_header(message.get('Subject', '(No subject)'))
     From = get_header(message.get('From'))
     date = get_date(message.get('Date'))
@@ -35,7 +52,12 @@ def get_headers(message: email.message.Message):
 
 
 def get_html_text(body: str):
-    """body    email html-body"""
+    """Get email HTML body text.
+
+    body      email HTML body;
+
+    return    str.
+    """
     logger = logging.getLogger(__name__)
     try:
         soup = BeautifulSoup(body, 'html.parser')
@@ -45,8 +67,13 @@ def get_html_text(body: str):
         return False
 
 
-def text_type(message: email.message.Message):
-    """message    email.message.Message object"""
+def decode_text(message: email.message.Message):
+    """Decode email text.
+
+    message    email.message.Message object;
+
+    return     str.
+    """
     if message['Content-Transfer-Encoding'] in (
         None, '7bit', '8bit', 'binary'
     ):
@@ -63,8 +90,13 @@ def text_type(message: email.message.Message):
 
 
 def get_text(message: email.message.Message):
-    """message    email.message.Message object"""
-    extract_part = text_type(message)
+    """Get email text.
+
+    message    email.message.Message object;
+
+    return     str.
+    """
+    extract_part = decode_text(message)
     if message.get_content_subtype() == 'html':
         text = get_html_text(extract_part)
     else:
@@ -77,7 +109,8 @@ def get_attachment(
     with_payload: bool = False,
     folder: Path = None
 ):
-    """
+    """Get email attachment files as a dictionary with name, path, payload.
+
     message         email.message.Message object;
     with_payload    add payload to the attached files;
     folder          folder path where attached files are saved;
@@ -108,7 +141,9 @@ def get_email(
     with_payload: bool = False,
     folder: Path = None
 ):
-    """
+    """Get email as a dictinary with subject, from, date, body, attachments
+    keys.
+
     server          imaplib.IMAP4_SSL object;
     num             email number;
     id_key          email ID key. Example: "Message-ID" - for Yandex;
@@ -171,8 +206,11 @@ def get_emails(
     with_payload: bool = False,
     folder: Path = None
 ):
-    """
-    server          объект класса imaplib.IMAP4_SSL;
+    """Get emails as a list of dictinaries with subject, from, date, body,
+    attachments.
+
+    keys.
+    server          imaplib.IMAP4_SSL object;
     criteria        email search criteria. Examples:
                     'ALL' - all emails,
                     'UNSEEN' - only unseen emails,
@@ -278,7 +316,7 @@ def read_email(
         server.login(params.email, params.password)
         logger.debug('Authorization completed')
         server.select(params.mailbox)
-        # Get e-mails
+        # Get emails
         emails = get_emails(
             server=server,
             criteria=params.criteria,
