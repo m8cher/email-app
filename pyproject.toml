@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "email-app"
+version = "0.1.0"
+description = "Sending and reading emails"
+authors = ["m8cher <m8cher@yandex.ru>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "email_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+jinja2 = "^3.1.2"
+bs4 = "^0.0.1"
+pydantic = "1.10.9"
+
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.1.0"
+python-dotenv = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
