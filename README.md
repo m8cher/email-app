@@ -107,7 +107,7 @@ Email with saved attachments and payload:
 
 **Note**: The original file name from the email is used for 'name' in `attachments`.
 
-Cyrillic characters in the folder name (`mailbox`) are set in bits, so you need to first get the folder name and then use it:
+Cyrillic symbols in the folder name (`mailbox`) are set in bits, so you need to first get the folder name and then use it:
 
 ```python
 import imaplib
