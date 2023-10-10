@@ -84,26 +84,28 @@ mails = read_email(
 
 **Примечание**: Если существует файл с таким же названием, как у прикрепленного файла, в `folder`, то прикрепленный файл сохраняется под измененным названием. Например: "test.xlsx" изменится на "test (1).xlsx".
 
-Возвращает список словарей прочитанных писем со следующими данными: `subject`, `from`, `date`, `body` (текст письма), `attachments` (список словарей из путей к сохраненным файлам или названий прикрепленных без или с payload в зависимости от `with_payload`).
+Возвращает список словарей прочитанных писем со следующими данными: `subject`, `from`, `date`, `body` (текст письма), `attachments` (список словарей из названий прикрепленных файлов, путей к сохраненным файлам при задании `folder` и с добавлением payload при `with_payload` равным True).
 
-Письма с сохранением прикрепленных файлов:
+Письма без сохранения прикрепленных файлов и добавления payload:
 ```
-[{'subject': 'Email returning filepath',
-  'from': 'email1@yandex.ru',
-  'date': 'dd.MM.yyyy HH:mm:ss',
-  'body': '',
-  'attachments': [{'path': 'path/to/some_file_1.xlsx'}]}]
-```
-Письма без сохранения прикрепленных файлов и с добавлением payload:
-```
-[{'subject': 'email returning filename and payload',
-  'from': 'email2@gmail.ru',
+[{'subject': 'some subject',
+  'from': 'email1@gmail.ru',
   'date': 'dd.MM.yyyy HH:mm:ss',
   'body': 'some message text',
-  'attachments': [{'name': 'some_file_2.pdf', 'payload': b'some_payload'}]}]
+  'attachments': [{'name': 'some_file.pdf'}]}]
+```
+Письма с сохранением прикрепленных файлов и с добавлением payload:
+```
+[{'subject': 'some subject',
+  'from': 'email2@yandex.ru',
+  'date': 'dd.MM.yyyy HH:mm:ss',
+  'body': '',
+  'attachments': [{name': 'some_file.xlsx', 'path': 'path/to/some_file (1).xlsx', 'payload': b'some_payload'}]}]
 ```
 
-**Примечание:** Кириллица в названии папки (`mailbox`) задается в битах, поэтому необходимо сначала получить название папки, и потом использовать его:
+**Примечание:** В `attachments` для ключа 'name' используется исходное название файла из письма.
+
+Кириллица в названии папки (`mailbox`) задается в битах, поэтому необходимо сначала получить название папки, и потом использовать его:
 
 ```python
 import imaplib

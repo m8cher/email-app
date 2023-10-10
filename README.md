@@ -86,26 +86,28 @@ Additional parameters:
 
 **Note**: If a file with the same name as the attached file exists in the `folder`, the attached file is saved under modified name. Example: "test.xlsx" modified to "test (1).xlsx".
 
-Returns a list of dictionaries containing the following email data: `subject`, `from`, `date`, `body` (email text), `attachments` (list of dictionaries with paths where attachments are saved or names of attachments with or without payload, depending on `with_payload`).
+Returns a list of dictionaries containing the following email data: `subject`, `from`, `date`, `body` (email text), `attachments` (list of dictionaries with names of attachments, paths where attachments are saved if `folder` is set and payload if `with_payload` is True).
 
-Email with saved attachments:
+Email without saving attached files and without payload:
 ```
-[{'subject': 'email returning filepath',
-  'from': 'email1@yandex.ru',
-  'date': 'dd.MM.yyyy HH:mm:ss',
-  'body': '',
-  'attachments': [{'path': 'path/to/some_file_1.xlsx'}]}]
-```
-Email without saving attached files and with payload:
-```
-[{'subject': 'email returning filename and payload',
-  'from': 'email2@gmail.ru',
+[{'subject': 'some subject',
+  'from': 'email1@gmail.ru',
   'date': 'dd.MM.yyyy HH:mm:ss',
   'body': 'some message text',
-  'attachments': [{'name': 'some_file_2.pdf', 'payload': b'some_payload'}]}]
+  'attachments': [{'name': 'some_file.pdf'}]}]
+```
+Email with saved attachments and payload:
+```
+[{'subject': 'some subject',
+  'from': 'email2@yandex.ru',
+  'date': 'dd.MM.yyyy HH:mm:ss',
+  'body': '',
+  'attachments': [{'name': 'some_file.xlsx', 'path': 'path/to/some_file (1).xlsx', 'payload': b'some_payload'}]}]
 ```
 
-**Note**: Cyrillic characters in the folder name (mailbox) are set in bits, so you need to first get the folder name and then use it:
+**Note**: The original file name from the email is used for 'name' in `attachments`.
+
+Cyrillic characters in the folder name (`mailbox`) are set in bits, so you need to first get the folder name and then use it:
 
 ```python
 import imaplib

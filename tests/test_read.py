@@ -41,7 +41,3 @@ class ReadEmail(unittest.TestCase):
             folder=FOLDER
         )
         print(mails)
-
-
-if __name__ == '__main__':
-    unittest.main()

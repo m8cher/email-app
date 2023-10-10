@@ -88,16 +88,16 @@ def get_attachment(
     filename = message.get_filename()
     payload = message.get_payload(decode=True)
     if filename:
+        result = {'name': filename}
         if folder:
             filepath = build_filepath(os.path.join(folder, filename))
             # Save file
             open(filepath, "wb").write(payload)
             logger.info(f"Attached file '{filename}' saved")
-            return {'path': filepath}
-        elif with_payload:
-            return {'name': filename, 'payload': payload}
-        else:
-            return {'name': filename}
+            result.update({'path': filepath})
+        if with_payload:
+            result.update({'payload': payload})
+        return result
 
 
 def get_email(
